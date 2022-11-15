@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name = "link_00" value = "BASE_FIJA" />
+  <xacro:property name = "link_01" value = "link_01" />
+  <xacro:property name = "link_02" value = "link_02" />
+  <xacro:property name = "link_03" value = "link_03" />
+  <xacro:property name = "link_04" value = "link_04" />
+  <xacro:property name = "link_05" value = "link_05" />
+  <xacro:property name = "link_06" value = "link_06" />
+  <xacro:property name = "joint_00" value = "q0" />
+  <xacro:property name = "joint_01" value = "q1" />
+  <xacro:property name = "joint_02" value = "q2" />
+  <xacro:property name = "joint_03" value = "q3" />
+  <xacro:property name = "joint_04" value = "q4" />
+  <xacro:property name = "joint_05" value = "q5" />
+
+</robot>

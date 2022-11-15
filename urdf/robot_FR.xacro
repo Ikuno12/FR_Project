@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+
+<robot name="robot_FR" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- BGN INCLUDE -->
+  <xacro:include filename="$(find modelo_robot)/urdf/robot_parameter.xacro" />
+  <!-- END INCLUDE -->
+
+
+  <!-- BGN Color of materials -->
+  <material name="yellow">
+    <color rgba="1 1 0 1"/>
+  </material>
+  <material name="blue">
+    <color rgba="0 0 1 1"/>
+  </material>
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+  <!-- END Color of materials -->
+
+
+  <!-- BGN VARIABLES -->
+  <xacro:property name="link_00_height" value="0.06" />
+  <xacro:property name="link_04_length" value="-0.174" />
+  <!-- END VARIABLES -->
+
+
+  <!-- BGN EXPRESSIONS -->
+
+  <!-- END EXPRESSIONS -->
+
+
+  <!-- BGN ROBOT DESCRIPTION -->
+  <link name="${link_00}">
+    <inertial>
+      <origin xyz="0 0 0.0273" rpy="0 0 0"/>
+      <mass value="50"/>
+      <inertia ixx="1.203"  ixy="0"  ixz="0" iyy="1.203" iyz="0" izz="2.363" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0"  rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/BASE_FIJA.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+      <material name="yellow" />
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/BASE_FIJA.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="${joint_00}" type="revolute">
+    <parent link="${link_00}"/>
+    <child link="${link_01}"/>
+    <origin xyz="0 0 ${link_00_height}" rpy="0 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+  <link name="${link_01}">
+    <inertial>
+      <origin xyz="0 -0.045366 0.110111" rpy="0 0 0"/>
+      <mass value="60"/>
+      <inertia ixx="0.7331"  ixy="0"  ixz="0" iyy="0.8951" iyz="0.1388" izz="0.7853" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 -0.02 0"  rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/BASE_MOVIL.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+      <material name="blue" />
+    </visual>
+
+    <collision>
+      <origin xyz="0 -0.02 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/BASE_MOVIL.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="${joint_01}" type="revolute">
+    <parent link="${link_01}"/>
+    <child link="${link_02}"/>
+    <origin xyz="0 0.041 0.13"  rpy="0.541052 0 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+  <link name="${link_02}">
+    <inertial>
+      <origin xyz="0 0.014446 0.068414" rpy="0.541052 0 0"/>
+      <mass value="5.275"/>
+      <inertia ixx="0.008116"  ixy="0"  ixz="0" iyy="0.006982" iyz="-0.000111" izz="0.008366" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0.048 0"  rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/SHOULDER_MOVE.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+      <material name="red" />
+    </visual>
+
+    <collision>
+      <origin xyz="0 0.048 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/SHOULDER_MOVE.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="${joint_02}" type="revolute">
+    <parent link="${link_02}"/>
+    <child link="${link_03}"/>
+    <origin xyz="0 0.086 0.0046"  rpy="1.5708 0 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.1" lower="-1" upper="1"/>
+  </joint>
+
+  <link name="${link_03}">
+    <inertial>
+      <origin xyz="0 0.099591 0.267629" rpy="1.5708 0 0"/>
+      <mass value="3.232"/>
+      <inertia ixx="0.01104"  ixy="0"  ixz="0" iyy="0.002555" iyz="-0.003257" izz="0.009774" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 -0.083"  rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/PIEZA_01_arm.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+      <material name="yellow" />
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 -0.083" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/PIEZA_01_arm.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="${joint_03}" type="revolute">
+    <parent link="${link_03}"/>
+    <child link="${link_04}"/>
+    <origin xyz="0 -0.0054 ${link_04_length}"  rpy="0 0 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.1" lower="-1" upper="1"/>
+  </joint>
+
+  <link name="${link_04}">
+    <inertial>
+      <origin xyz="0 0.3465 0.53" rpy="0 0 0"/>
+      <mass value="3.232"/>
+      <inertia ixx="0.01104"  ixy="0"  ixz="0" iyy="0.00255" iyz="-0.00326" izz="0.0098" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 -0.083"  rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/PIEZA_02_arm.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+      <material name="blue" />
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 -0.083" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/PIEZA_02_arm.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="${joint_04}" type="revolute">
+    <parent link="${link_04}"/>
+    <child link="${link_05}"/>
+    <origin xyz="0 -0.008 ${link_04_length}"  rpy="-1.5708 0 -1.5708" />
+    <axis xyz="1 0 0" />
+    <limit effort="300" velocity="0.1" lower="-1.4" upper="1.4"/>
+  </joint>
+
+  <link name="${link_05}">
+    <inertial>
+      <origin xyz="0.0005 0.4463 0.5903" rpy="-1.5708 0 -1.5708"/>
+      <mass value="0.729"/>
+      <inertia ixx="0.000413"  ixy="0"  ixz="0" iyy="0.0001899" iyz="0" izz="0.0004294" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0.018 0"  rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/PIEZA_hands_1.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+      <material name="red" />
+    </visual>
+
+    <collision>
+      <origin xyz="0 0.018 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/PIEZA_hands_1.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="${joint_05}" type="revolute">
+    <parent link="${link_05}"/>
+    <child link="${link_06}"/>
+    <origin xyz="0.0035 0.071 0"  rpy="0 0 0" />
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+  <link name="${link_06}">
+    <inertial>
+      <origin xyz="-0.0039  0.4157  0.4365" rpy="0 0 0"/>
+      <mass value="0.1623"/>
+      <inertia ixx="0.000025"  ixy="0"  ixz="0" iyy="0.000028" iyz="0" izz="0.000026" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0"  rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/PIEZA_hands_0.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+      <material name="blue" />
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://modelo_robot/piezas_robot/PIEZA_hands_0.stl" scale = "0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- END ROBOT DESCRIPTION -->
+
+</robot>
