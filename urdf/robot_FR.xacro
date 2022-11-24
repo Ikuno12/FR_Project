@@ -20,7 +20,22 @@
   <!-- END Color of materials -->
 
 
+
+
   <!-- BGN VARIABLES -->
+  <xacro:macro name="FR_robot" params="link_00:=l0
+    link_01:=l1
+    link_02:=l2
+    link_03:=l3
+    link_04:=l4
+    link_05:=l5
+    link_06:=l6
+    joint_00:=j0 
+    joint_01:=j1 
+    joint_02:=j2 
+    joint_03:=j3 
+    joint_04:=j4 
+    joint_05:=j5" />
   <xacro:property name="link_00_height" value="0.06" />
   <xacro:property name="link_04_length" value="-0.174" />
   <!-- END VARIABLES -->

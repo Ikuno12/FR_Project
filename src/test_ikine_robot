@@ -1,0 +1,77 @@
+#!/usr/bin/env python
+
+import rospy
+from std_msgs.msg import String
+from markers import *
+from functions import *
+from sensor_msgs.msg import JointState
+global press_key
+press_key = "0"
+
+if __name__ == '__main__':
+
+    rospy.init_node("robotIkine")
+    pub = rospy.Publisher('joint_states', JointState, queue_size=1000)
+
+    bmarker = BallMarker(color['GREEN'])    # actual
+    bmarker_des = BallMarker(color['RED'])  # deseado
+
+    # Nombres de las articulaciones
+    jnames = ['j{}'.format(n) for n in range(7)]
+
+    # Configuraciones articulares iniciales
+    q0 = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+
+    # Cine inversa
+    xd = np.array([0.84, 0.125, 0.249])  # pos deseada
+    q = ik_gradient_robot(xd, q0)
+
+    # Cine directa
+    T = fkine_robot(q)
+    print('T inicial:\n', np.round(T, 3))
+
+    # Marcador inicial
+    bmarker.xyz(T[:3, 3])
+    bmarker_des.xyz(xd)
+
+    # Loop rate (in Hz)
+    rate = rospy.Rate(2)
+
+    # Mensaje JointState
+    jstate = JointState()
+    jstate.header.stamp = rospy.Time.now()
+    jstate.name = jnames
+    jstate.position = q.tolist()
+
+    # Limites articulares
+    qmax = np.pi*np.ones((6,))
+    qmin = -np.pi*np.ones((6,))
+
+    # Continuous execution loop
+    while not rospy.is_shutdown():
+
+        # Inverse kinematics
+        q = ikine_robot(xd, q)
+
+        # Limites
+        q = np.minimum(np.maximum(q, qmin), qmax)
+
+        # Resulting position (end effector with respect to the base link)
+        T = fkine_robot(q)
+        print("pos obtenida:", T[0:3, 3])
+
+        # Red marker shows the achieved position
+        bmarker.xyz(T[0:3, 3])
+        # Green marker shows the desired position
+        bmarker_des.xyz(xd)
+
+        bmarker.xyz(T[:3, 3])  # actualizar ball marker
+        jstate.position = q.tolist()  # actualizar robot
+        jstate.header.stamp = rospy.Time.now()
+
+        pub.publish(jstate)
+        bmarker.publish()
+        bmarker_des.publish()
+
+        # Wait for the next iteration
+        rate.sleep()
